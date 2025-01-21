@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <title>Mi Web con Vue </title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <header class="header">
+      <h1>{{ title }}</h1>
+    </header>
+
+    <main class="content">
+      <section class="multimedia" v-for="section in multimediaSections" :key="section.title">
+        <h2>{{ section.title }}</h2>
+        <div class="item" v-for="(item, index) in section.items" :key="index">
+          <template v-if="section.type === 'audio'">
+            <audio controls>
+              <source :src="item.src" type="audio/mpeg">
+              Tu navegador no soporta el elemento de audio.
+            </audio>
+          </template>
+          <template v-else-if="section.type === 'video'">
+            <video controls width="300">
+              <source :src="item.src" type="video/mp4">
+              Tu navegador no soporta el elemento de video.
+            </video>
+          </template>
+          <template v-else-if="section.type === 'pdf'">
+            <a :href="item.src" target="_blank" class="pdf-link">{{ item.name }}</a>
+          </template>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          title: "Oscar Guerra Dev and Trader",
+          multimediaSections: [
+            {
+              title: "Podcast",
+              type: "audio",
+              items: [
+                { src: "audio1.mp3" },
+                { src: "audio2.mp3" },
+                { src: "audio3.mp3" },
+                { src: "audio4.mp3" },
+                { src: "audio5.mp3" },
+              ],
+            },
+            {
+              title: "Videos",
+              type: "video",
+              items: [
+                { src: "./Multimedia/videos/Un trade cualquiera.mp4" },
+                { src: "video2.mp4" },
+                { src: "video3.mp4" },
+                { src: "video4.mp4" },
+                { src: "video5.mp4" },
+              ],
+            },
+            {
+              title: "Documentos PDF",
+              type: "pdf",
+              items: [
+                { name: "Documento 1", src: "doc1.pdf" },
+                { name: "Documento 2", src: "doc2.pdf" },
+                { name: "Documento 3", src: "doc3.pdf" },
+                { name: "Documento 4", src: "doc4.pdf" },
+                { name: "Documento 5", src: "doc5.pdf" },
+                { name: "Documento 6", src: "doc6.pdf" },
+                { name: "Documento 7", src: "doc7.pdf" },
+                { name: "Documento 8", src: "doc8.pdf" },
+                { name: "Documento 9", src: "doc9.pdf" },
+                { name: "Documento 10", src: "doc10.pdf" },
+              ],
+            },
+          ],
+        };
+      },
+    });
+
+    app.mount("#app");
+  </script>
+</body>
+</html>

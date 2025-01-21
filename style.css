@@ -1,0 +1,78 @@
+/* General Styles */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f7f9fc;
+  color: #333;
+}
+
+/* Header */
+.header {
+  background-color: #4CAF50;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Main Content */
+.content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.multimedia {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.multimedia:hover {
+  transform: translateY(-5px);
+}
+
+.multimedia h2 {
+  margin-top: 0;
+  color: #4CAF50;
+}
+
+.item {
+  margin: 50px 0;
+}
+
+audio, video {
+  display: block;
+  margin: 10px auto;
+  max-width: 100%;
+}
+
+.pdf-link {
+  display: block;
+  margin: 5px 0;
+  color: #007BFF;
+  text-decoration: none;
+}
+
+.pdf-link:hover {
+  text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.multimedia {
+  animation: fadeIn 0.5s ease-in-out;
+}
