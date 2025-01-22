@@ -20,17 +20,33 @@
           <template v-if="section.type === 'audio'">
             <audio controls>
               <source :src="item.src" type="audio/mpeg">
-              Tu navegador no soporta el elemento de audio.
+             
             </audio>
           </template>
           <template v-else-if="section.type === 'video'">
-            <video controls width="300">
+            <video 
+              controls 
+              width="300"
+              class="video-player"
+              :title="item.name || 'Video'"
+              preload="metadata"
+              @error="handleVideoError"
+            >
               <source :src="item.src" type="video/mp4">
-              Tu navegador no soporta el elemento de video.
+              <p>Tu navegador no soporta videos HTML5.</p>
             </video>
           </template>
           <template v-else-if="section.type === 'pdf'">
-            <a :href="item.src" target="_blank" class="pdf-link">{{ item.name }}</a>
+            <a 
+              :href="item.src" 
+              target="_blank" 
+              class="pdf-link"
+              :title="`Abrir ${item.name} en nueva pestaña`"
+              @click="trackPdfClick(item.name)"
+            >
+              <span class="pdf-icon">📄</span>
+              {{ item.name }}
+            </a>
           </template>
         </div>
       </section>
@@ -38,6 +54,7 @@
   </div>
 
   <script>
+    
     const app = Vue.createApp({
       data() {
         return {
