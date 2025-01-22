@@ -8,67 +8,112 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
   <div id="app">
     <header class="header">
       <h1>{{ title }}</h1>
+      <div class="search-container">
+        <input 
+          v-model="searchQuery" 
+          type="text" 
+          placeholder="Buscar contenido..."
+          @input="filterContent"
+        >
+        <select v-model="filterType">
+          <option value="all">Todos</option>
+          <option value="audio">Podcasts</option>
+          <option value="video">Videos</option>
+          <option value="pdf">PDFs</option>
+        </select>
+      </div>
     </header>
 
     <main class="content">
       <section class="multimedia" v-for="section in multimediaSections" :key="section.title">
         <h2>{{ section.title }}</h2>
         <div class="item" v-for="(item, index) in section.items" :key="index">
+          <div class="item-header">
+            <button 
+              @click="toggleFavorite(section.type, item)"
+              class="favorite-btn"
+              :class="{ 'is-favorite': isFavorite(section.type, item) }"
+            >
+              ⭐
+            </button>
+          </div>
           <template v-if="section.type === 'audio'">
             <audio controls>
               <source :src="item.src" type="audio/mpeg">
              
             </audio>
           </template>
-          <template v-else-if="section.type === 'video'">
-            <video 
-              controls 
-              width="300"
-              class="video-player"
-              :title="item.name || 'Video'"
-              preload="metadata"
-              @error="handleVideoError"
-            >
-              <source :src="item.src" type="video/mp4">
-              <p>Tu navegador no soporta videos HTML5.</p>
-            </video>
-          </template>
-          <template v-else-if="section.type === 'pdf'">
-            <a 
-              :href="item.src" 
-              target="_blank" 
-              class="pdf-link"
-              :title="`Abrir ${item.name} en nueva pestaña`"
-              @click="trackPdfClick(item.name)"
-            >
-              <span class="pdf-icon">📄</span>
-              {{ item.name }}
-            </a>
-          </template>
+          <template v-if="section.type === 'video'">
+  <div class="video-container">
+    <video 
+      controls 
+      width="300"
+      class="video-player"
+      :title="item.name || 'Video'"
+      preload="metadata"
+      @error="handleVideoError"
+      @loadstart="item.loading = true"
+      @loadeddata="item.loading = false"
+    >
+      <source :src="item.src" type="video/mp4">
+      <p>Tu navegador no soporta videos HTML5.</p>
+    </video>
+    <div v-if="item.loading" class="loader"></div>
+    <div v-if="item.error" class="error-message">
+      {{ item.error }}
+    </div>
+  </div>
+</template>
+        </div>
+        <div class="playlist-controls" v-if="section.type === 'audio' || section.type === 'video'">
+          <button @click="createPlaylist(section.type)" class="playlist-btn">
+            Crear Playlist
+          </button>
+          <select v-model="selectedPlaylist" class="playlist-select">
+            <option v-for="playlist in playlists" :value="playlist.id">
+              {{ playlist.name }}
+            </option>
+          </select>
+          <button @click="addToPlaylist(item)" class="playlist-btn">
+            Añadir a Playlist
+          </button>
+        </div>
+        <div class="share-buttons">
+          <button @click="shareContent(item, 'facebook')" class="share-btn facebook">
+            Facebook
+          </button>
+          <button @click="shareContent(item, 'twitter')" class="share-btn twitter">
+            Twitter
+          </button>
+          <button @click="shareContent(item, 'whatsapp')" class="share-btn whatsapp">
+            WhatsApp
+          </button>
         </div>
       </section>
     </main>
   </div>
 
   <script>
-    
     const app = Vue.createApp({
       data() {
         return {
           title: "Oscar Guerra Dev and Trader",
+          searchQuery: '',
+          filterType: 'all',
+          favorites: JSON.parse(localStorage.getItem('favorites') || '{}'),
           multimediaSections: [
             {
               title: "Podcast",
               type: "audio",
               items: [
-                { src: "audio1.mp3" },
-                { src: "audio2.mp3" },
+                { src: "./Multimedia/audio/PodcastOscarGuerraEsp.wav" },
+                { src: "./Multimedia/audio/PodcastOscarGuerraEng.wav", name: "Podcast Oscar Guerra English" },
                 { src: "audio3.mp3" },
-                { src: "audio4.mp3" },
-                { src: "audio5.mp3" },
+                
               ],
             },
             {
@@ -76,34 +121,127 @@
               type: "video",
               items: [
                 { src: "./Multimedia/videos/Un trade cualquiera.mp4" },
-                { src: "video2.mp4" },
-                { src: "video3.mp4" },
-                { src: "video4.mp4" },
-                { src: "video5.mp4" },
+                { src: "./Multimedia/videos/Norecuerdo.mp4" },
+                { src: "./Multimedia/videos/Uno-Uno.mp4"},
+                { src: "./Multimedia/videos/Trade.mp4"},
               ],
             },
             {
               title: "Documentos PDF",
               type: "pdf",
               items: [
-                { name: "Documento 1", src: "doc1.pdf" },
+                { name: "Documento 1", src: "./Multimedia/PDFs/DiarioDeTrading(1).pdf" },
                 { name: "Documento 2", src: "doc2.pdf" },
                 { name: "Documento 3", src: "doc3.pdf" },
-                { name: "Documento 4", src: "doc4.pdf" },
-                { name: "Documento 5", src: "doc5.pdf" },
-                { name: "Documento 6", src: "doc6.pdf" },
-                { name: "Documento 7", src: "doc7.pdf" },
-                { name: "Documento 8", src: "doc8.pdf" },
-                { name: "Documento 9", src: "doc9.pdf" },
-                { name: "Documento 10", src: "doc10.pdf" },
+          
               ],
             },
           ],
+          currentPage: 1,
+          itemsPerPage: 5,
+          isDarkMode: localStorage.getItem('darkMode') === 'true',
+          playlists: [],
+          selectedPlaylist: null,
+          newTag: '',
         };
       },
+      computed: {
+        paginatedSections() {
+          const start = (this.currentPage - 1) * this.itemsPerPage;
+          const end = start + this.itemsPerPage;
+          return this.filteredSections.slice(start, end);
+        },
+        totalPages() {
+          return Math.ceil(this.filteredSections.length / this.itemsPerPage);
+        }
+      },
+      methods: {
+        filterContent() {
+          // Implementar lógica de filtrado
+        },
+        toggleFavorite(type, item) {
+          const key = `${type}-${item.src}`;
+          if (this.favorites[key]) {
+            delete this.favorites[key];
+          } else {
+            this.favorites[key] = item;
+          }
+          localStorage.setItem('favorites', JSON.stringify(this.favorites));
+        },
+        isFavorite(type, item) {
+          return !!this.favorites[`${type}-${item.src}`];
+        },
+        handleVideoError(e) {
+          e.target.closest('.item').error = 'Error al cargar el video';
+        },
+        toggleDarkMode() {
+          this.isDarkMode = !this.isDarkMode;
+          localStorage.setItem('darkMode', this.isDarkMode);
+        },
+        createPlaylist(type) {
+          const name = prompt('Nombre de la playlist:');
+          if (name) {
+            const playlist = {
+              id: Date.now(),
+              name,
+              type,
+              items: []
+            };
+            this.playlists.push(playlist);
+            localStorage.setItem('playlists', JSON.stringify(this.playlists));
+          }
+        },
+        addToPlaylist(item) {
+          if (!this.selectedPlaylist) return;
+          const playlist = this.playlists.find(p => p.id === this.selectedPlaylist);
+          if (playlist && !playlist.items.includes(item.src)) {
+            playlist.items.push(item.src);
+            localStorage.setItem('playlists', JSON.stringify(this.playlists));
+          }
+        },
+        shareContent(item, platform) {
+          const url = encodeURIComponent(window.location.href);
+          const title = encodeURIComponent(item.name || 'Contenido compartido');
+          
+          const shareUrls = {
+            facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+            twitter: `https://twitter.com/intent/tweet?url=${url}&text=${title}`,
+            whatsapp: `https://wa.me/?text=${title}%20${url}`
+          };
+          
+          window.open(shareUrls[platform], '_blank');
+        },
+        addTag(item) {
+          if (!this.newTag.trim()) return;
+          if (!item.tags) item.tags = [];
+          if (!item.tags.includes(this.newTag)) {
+            item.tags.push(this.newTag);
+          }
+          this.newTag = '';
+        },
+        removeTag(item, tag) {
+          item.tags = item.tags.filter(t => t !== tag);
+        },
+        trackView(item) {
+          if (!item.views) item.views = 0;
+          item.views++;
+          item.lastViewed = new Date();
+        },
+        formatLastViewed(date) {
+          if (!date) return 'Nunca visto';
+          return new Date(date).toLocaleDateString();
+        }
+      }
     });
 
     app.mount("#app");
   </script>
+    <div id="app"></div>
+    <button @click="toggleDarkMode" class="theme-toggle">
+      {{ isDarkMode ? '☀️' : '🌙' }}
+    </button>
+    <!-- Contenido existente -->
+  </div>
+  
 </body>
 </html>
