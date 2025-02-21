@@ -11,6 +11,7 @@
 
   <div id="app">
     <header class="header">
+      <img src="Multimedia/img/me .jpg" alt="Logo del sitio" class="logo">
       <h1>{{ title }}</h1>
       <div class="search-container">
         <input 
@@ -32,21 +33,23 @@
       <section class="multimedia" v-for="section in multimediaSections" :key="section.title">
         <h2>{{ section.title }}</h2>
         <div class="item" v-for="(item, index) in section.items" :key="index">
-          <div class="item-header">
-            <button 
-              @click="toggleFavorite(section.type, item)"
-              class="favorite-btn"
-              :class="{ 'is-favorite': isFavorite(section.type, item) }"
-            >
-              ⭐
-            </button>
-          </div>
-          <template v-if="section.type === 'audio'">
-            <audio controls>
-              <source :src="item.src" type="audio/mpeg">
-             
-            </audio>
-          </template>
+          <div class="item-content">
+            <div class="media-wrapper">
+              <div class="item-header">
+                <button 
+                  @click="toggleFavorite(section.type, item)"
+                  class="favorite-btn"
+                  :class="{ 'is-favorite': isFavorite(section.type, item) }"
+                >
+                  ⭐
+                </button>
+              </div>
+              <template v-if="section.type === 'audio'">
+                <audio controls>
+                  <source :src="item.src" type="audio/mpeg">
+                </audio>
+              </template>
+              
           <template v-if="section.type === 'video'">
   <div class="video-container">
     <video 
@@ -69,33 +72,73 @@
   </div>
 </template>
         </div>
-        <div class="playlist-controls" v-if="section.type === 'audio' || section.type === 'video'">
-          <button @click="createPlaylist(section.type)" class="playlist-btn">
-            Crear Playlist
-          </button>
-          <select v-model="selectedPlaylist" class="playlist-select">
-            <option v-for="playlist in playlists" :value="playlist.id">
-              {{ playlist.name }}
-            </option>
-          </select>
-          <button @click="addToPlaylist(item)" class="playlist-btn">
-            Añadir a Playlist
-          </button>
+            <div class="item-description">
+              <p>{{ item.description }}</p>
+            </div>
+          </div>
+          <div class="playlist-controls" v-if="section.type === 'audio' || section.type === 'video'">
+            <button @click="createPlaylist(section.type)" class="playlist-btn">
+              Crear Playlist
+            </button>
+            <select v-model="selectedPlaylist" class="playlist-select">
+              <option v-for="playlist in playlists" :value="playlist.id">
+                {{ playlist.name }}
+              </option>
+            </select>
+            <button @click="addToPlaylist(item)" class="playlist-btn">
+              Añadir a Playlist
+            </button>
+          </div>
+          <div class="share-buttons">
+            <button @click="shareContent(item, 'facebook')" class="share-btn facebook">
+              Facebook
+            </button>
+            <button @click="shareContent(item, 'twitter')" class="share-btn twitter">
+              Twitter
+            </button>
+            <button @click="shareContent(item, 'whatsapp')" class="share-btn whatsapp">
+              WhatsApp
+            </button>
+          </div>
+
+          <!-- Sistema de comentarios -->
+          <div class="comments-section">
+            <h3>Comentarios</h3>
+            
+            <!-- Lista de comentarios -->
+            <div class="comments-list">
+              <div v-for="comment in getComments(section.type, item.src)" 
+                   :key="comment.id" 
+                   class="comment">
+                <div class="comment-header">
+                  <strong>{{ comment.author }}</strong>
+                  <span class="comment-date">{{ new Date(comment.timestamp).toLocaleString() }}</span>
+                </div>
+                <p class="comment-text">{{ comment.text }}</p>
+              </div>
+            </div>
+
+            <!-- Formulario de comentarios -->
+            <div class="comment-form">
+              <textarea 
+                v-model="item.newCommentText"
+                placeholder="Escribe tu comentario..."
+                maxlength="500"
+              ></textarea>
+              <button 
+                @click="addComment(section.type, item.src, item.newCommentText)"
+                :disabled="!item.newCommentText || !item.newCommentText.trim()"
+              >
+                Comentar
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="share-buttons">
-          <button @click="shareContent(item, 'facebook')" class="share-btn facebook">
-            Facebook
-          </button>
-          <button @click="shareContent(item, 'twitter')" class="share-btn twitter">
-            Twitter
-          </button>
-          <button @click="shareContent(item, 'whatsapp')" class="share-btn whatsapp">
-            WhatsApp
-          </button>
-        </div>
+        
       </section>
     </main>
   </div>
+  
 
   <script>
     const app = Vue.createApp({
@@ -110,20 +153,42 @@
               title: "Podcast",
               type: "audio",
               items: [
-                { src: "./Multimedia/audios/PodcastOscarGuerraEsp.wav" },
-                { src: "./Multimedia/audios/PodcastOscarGuerraIng.wav"},
+                { 
+                  src: "./Multimedia/audios/PodcastOscarGuerraEsp.wav",
+                  description: "En este episodio fascinante, exploramos las complejidades del trading moderno y el desarrollo de software. Comenzamos analizando cómo la tecnología ha revolucionado los mercados financieros, desde los algoritmos de trading automatizado hasta la influencia de la inteligencia artificial en la toma de decisiones. Discutimos las estrategias fundamentales que todo trader debería conocer, incluyendo el análisis técnico, la gestión del riesgo y la importancia de mantener un diario de trading detallado. También abordamos cómo la psicología del trading afecta nuestras decisiones y compartimos técnicas prácticas para mantener el control emocional durante las operaciones. Además, examinamos la intersección entre el trading y el desarrollo de software, explorando cómo las habilidades de programación pueden mejorar significativamente la eficiencia y precisión del trading. Compartimos experiencias personales sobre el desarrollo de indicadores personalizados y sistemas automatizados, destacando la importancia de la prueba y optimización continua."
+                },
+                { 
+                  src: "./Multimedia/audios/PodcastOscarGuerraIng.wav",
+                  description: "In this enlightening episode, we delve into the world of modern trading and software development. We explore how technology has transformed financial markets, from automated trading algorithms to the impact of artificial intelligence on decision-making. We discuss essential trading strategies, including technical analysis, risk management, and the importance of maintaining a detailed trading journal. The psychology of trading and its influence on our decisions is examined, along with practical techniques for maintaining emotional control during trades. We also investigate the intersection of trading and software development, exploring how programming skills can significantly enhance trading efficiency and accuracy. Personal experiences in developing custom indicators and automated systems are shared, emphasizing the importance of continuous testing and optimization."
+                },
                 { src: "audio3.mp3" },
-                
               ],
             },
             {
               title: "Videos",
               type: "video",
               items: [
-                { src: "./Multimedia/videos/Un trade cualquiera.mp4" },
-                { src: "./Multimedia/videos/Norecuerdo.mp4" },
-                { src: "./Multimedia/videos/Uno-Uno.mp4"},
-                { src: "./Multimedia/videos/Trade.mp4"},
+                { 
+                  src: "./Multimedia/videos/Un trade cualquiera.mp4",
+                  description: "En este video educativo, realizamos un análisis detallado de una operación de trading en tiempo real. Comenzamos explicando el proceso de identificación de oportunidades de mercado utilizando análisis técnico avanzado, incluyendo el uso de indicadores personalizados y patrones de precio. Observamos cómo se desarrolla la configuración del trade, desde la identificación inicial de la señal hasta la ejecución de la entrada. Durante el video, compartimos insights sobre la gestión del riesgo, el dimensionamiento de la posición y la importancia de mantener un plan de trading disciplinado. También discutimos los aspectos psicológicos que surgen durante la operación y cómo manejar las emociones efectivamente. Este video sirve como una guía práctica para traders de todos los niveles, demostrando cómo aplicar conceptos teóricos en situaciones reales de mercado."
+                },
+                { 
+                  src: "./Multimedia/videos/Norecuerdo.mp4",
+                  description: "Este video explora las mejores prácticas en el desarrollo de software para trading. Comenzamos con una introducción a los principios fundamentales de la programación aplicada a los mercados financieros, incluyendo la importancia de la eficiencia del código y la gestión de datos en tiempo real. Analizamos diferentes frameworks y tecnologías comúnmente utilizadas en el desarrollo de sistemas de trading, destacando sus ventajas y limitaciones. También discutimos la implementación de estrategias de backtesting y la importancia de la optimización del código para el trading de alta frecuencia. El video incluye ejemplos prácticos de código y demostraciones de herramientas populares utilizadas en la industria."
+                },
+                { 
+                  src: "./Multimedia/videos/Trade.mp4",
+                  description: "Este video explora las mejores prácticas en el desarrollo de software para trading. Comenzamos con una introducción a los principios fundamentales de la programación aplicada a los mercados financieros, incluyendo la importancia de la eficiencia del código y la gestión de datos en tiempo real. Analizamos diferentes frameworks y tecnologías comúnmente utilizadas en el desarrollo de sistemas de trading, destacando sus ventajas y limitaciones. También discutimos la implementación de estrategias de backtesting y la importancia de la optimización del código para el trading de alta frecuencia. El video incluye ejemplos prácticos de código y demostraciones de herramientas populares utilizadas en la industria."
+                },
+                { 
+                  src: "./Multimedia/videos/Uno-Uno.mp4",
+                  description: "Este video explora las mejores prácticas en el desarrollo de software para trading. Comenzamos con una introducción a los principios fundamentales de la programación aplicada a los mercados financieros, incluyendo la importancia de la eficiencia del código y la gestión de datos en tiempo real. Analizamos diferentes frameworks y tecnologías comúnmente utilizadas en el desarrollo de sistemas de trading, destacando sus ventajas y limitaciones. También discutimos la implementación de estrategias de backtesting y la importancia de la optimización del código para el trading de alta frecuencia. El video incluye ejemplos prácticos de código y demostraciones de herramientas populares utilizadas en la industria."
+                },
+                { 
+                  src: "./Multimedia/videos/Positivo.mp4",
+                  description: "Este video explora las mejores prácticas en el desarrollo de software para trading. Comenzamos con una introducción a los principios fundamentales de la programación aplicada a los mercados financieros, incluyendo la importancia de la eficiencia del código y la gestión de datos en tiempo real. Analizamos diferentes frameworks y tecnologías comúnmente utilizadas en el desarrollo de sistemas de trading, destacando sus ventajas y limitaciones. También discutimos la implementación de estrategias de backtesting y la importancia de la optimización del código para el trading de alta frecuencia. El video incluye ejemplos prácticos de código y demostraciones de herramientas populares utilizadas en la industria."
+                },                                     
+              
               ],
             },
             {
@@ -131,8 +196,6 @@
               type: "pdf",
               items: [
                 { src: "./Multimedia/PDFs/DiarioDeTrading(1).pdf" },
-                
-          
               ],
             },
           ],
@@ -142,6 +205,10 @@
           playlists: [],
           selectedPlaylist: null,
           newTag: '',
+          comments: {
+            video: {},
+            audio: {}
+          }
         };
       },
       computed: {
@@ -229,6 +296,55 @@
         formatLastViewed(date) {
           if (!date) return 'Nunca visto';
           return new Date(date).toLocaleDateString();
+        },
+        getComments(mediaType, mediaId) {
+          if (!this.comments[mediaType]) {
+            this.comments[mediaType] = {};
+          }
+          if (!this.comments[mediaType][mediaId]) {
+            this.comments[mediaType][mediaId] = [];
+          }
+          return this.comments[mediaType][mediaId];
+        },
+        addComment(mediaType, mediaId, commentText) {
+          if (!commentText || !commentText.trim()) {
+            return;
+          }
+
+          const comment = {
+            id: Date.now(),
+            author: 'Usuario', // Puedes cambiarlo por el nombre del usuario actual
+            text: commentText.trim(),
+            timestamp: new Date().toISOString()
+          };
+
+          if (!this.comments[mediaType]) {
+            this.comments[mediaType] = {};
+          }
+          if (!this.comments[mediaType][mediaId]) {
+            this.comments[mediaType][mediaId] = [];
+          }
+
+          this.comments[mediaType][mediaId].push(comment);
+          
+          // Limpiar el campo de comentario
+          const item = this.multimediaSections
+            .find(section => section.type === mediaType)
+            .items.find(item => item.src === mediaId);
+          
+          if (item) {
+            item.newCommentText = '';
+          }
+
+          // Opcional: Guardar en localStorage
+          localStorage.setItem('comments', JSON.stringify(this.comments));
+        }
+      },
+      mounted() {
+        // Cargar comentarios guardados al iniciar
+        const savedComments = localStorage.getItem('comments');
+        if (savedComments) {
+          this.comments = JSON.parse(savedComments);
         }
       }
     });
