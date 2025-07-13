@@ -1,362 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <title>Mi Web con Vue </title>
+  <title>Oscar Guerra | Dev, Trader & Estudiante</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
   <div id="app">
-    <header class="header">
-      <img src="Multimedia/img/me .jpg" alt="Logo del sitio" class="logo">
-      <h1>{{ title }}</h1>
-      <div class="search-container">
-        <input 
-          v-model="searchQuery" 
-          type="text" 
-          placeholder="Buscar contenido..."
-          @input="filterContent"
-        >
-        <select v-model="filterType">
-          <option value="all">Todos</option>
-          <option value="audio">Podcasts</option>
-          <option value="video">Videos</option>
-          <option value="pdf">PDFs</option>
-        </select>
-      </div>
+    <header class="header" role="banner">
+      <nav class="main-nav" aria-label="Navegación principal">
+        <img src="Multimedia/img/me .jpg" alt="Foto de Oscar Guerra" class="logo" />
+        <h1>Oscar Guerra</h1>
+        <ul class="nav-list">
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#sobre-mi">Sobre mí</a></li>
+          <li><a href="#trading">Trading</a></li>
+          <li><a href="#ingenieria">Ingeniería de Sistemas</a></li>
+          <li><a href="#desarrollo-web">Desarrollo Web</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
     </header>
-
-    <main class="content">
-      <section class="multimedia" v-for="section in multimediaSections" :key="section.title">
-        <h2>{{ section.title }}</h2>
-        <div class="item" v-for="(item, index) in section.items" :key="index">
-          <div class="item-content">
-            <div class="media-wrapper">
-              <div class="item-header">
-                <button 
-                  @click="toggleFavorite(section.type, item)"
-                  class="favorite-btn"
-                  :class="{ 'is-favorite': isFavorite(section.type, item) }"
-                >
-                  ⭐
-                </button>
-              </div>
-              <template v-if="section.type === 'audio'">
-                <audio controls>
-                  <source :src="item.src" type="audio/mpeg">
-                </audio>
-              </template>
-              
-          <template v-if="section.type === 'video'">
-  <div class="video-container">
-    <video 
-      controls 
-      width="300"
-      class="video-player"
-      :title="item.name || 'Video'"
-      preload="metadata"
-      @error="handleVideoError"
-      @loadstart="item.loading = true"
-      @loadeddata="item.loading = false"
-    >
-      <source :src="item.src" type="video/mp4">
-      <p>Tu navegador no soporta videos HTML5.</p>
-    </video>
-    <div v-if="item.loading" class="loader"></div>
-    <div v-if="item.error" class="error-message">
-      {{ item.error }}
-    </div>
-  </div>
-</template>
+    <main class="content" id="inicio">
+      <section id="sobre-mi" tabindex="-1">
+        <h2>Sobre mí</h2>
+        <p>Soy Oscar Guerra, apasionado por el aprendizaje continuo y el desarrollo personal. Actualmente estudio Ingeniería de Sistemas, me dedico al trading y me encuentro en formación como desarrollador web. Me motiva la tecnología, la innovación y el análisis de datos para la toma de decisiones.</p>
+      </section>
+      <section id="trading" tabindex="-1">
+        <h2>Trading</h2>
+        <p>Mi actividad como trader se centra en el análisis técnico, la gestión del riesgo y la automatización de estrategias. Comparto podcasts, videos y recursos sobre trading y finanzas.</p>
+        <div class="multimedia">
+          <h3>Podcast</h3>
+          <audio controls>
+            <source src="./Multimedia/audios/PodcastOscarGuerraEsp.wav" type="audio/wav">
+            Tu navegador no soporta el elemento de audio.
+          </audio>
+          <p>En este episodio exploramos las complejidades del trading moderno y el desarrollo de software, desde algoritmos hasta psicología del trading.</p>
         </div>
-            <div class="item-description">
-              <p>{{ item.description }}</p>
-            </div>
-          </div>
-          <div class="playlist-controls" v-if="section.type === 'audio' || section.type === 'video'">
-            <button @click="createPlaylist(section.type)" class="playlist-btn">
-              Crear Playlist
-            </button>
-            <select v-model="selectedPlaylist" class="playlist-select">
-              <option v-for="playlist in playlists" :value="playlist.id">
-                {{ playlist.name }}
-              </option>
-            </select>
-            <button @click="addToPlaylist(item)" class="playlist-btn">
-              Añadir a Playlist
-            </button>
-          </div>
-          <div class="share-buttons">
-            <button @click="shareContent(item, 'facebook')" class="share-btn facebook">
-              Facebook
-            </button>
-            <button @click="shareContent(item, 'twitter')" class="share-btn twitter">
-              Twitter
-            </button>
-            <button @click="shareContent(item, 'whatsapp')" class="share-btn whatsapp">
-              WhatsApp
-            </button>
-          </div>
-
-          <!-- Sistema de comentarios -->
-          <div class="comments-section">
-            <h3>Comentarios</h3>
-            
-            <!-- Lista de comentarios -->
-            <div class="comments-list">
-              <div v-for="comment in getComments(section.type, item.src)" 
-                   :key="comment.id" 
-                   class="comment">
-                <div class="comment-header">
-                  <strong>{{ comment.author }}</strong>
-                  <span class="comment-date">{{ new Date(comment.timestamp).toLocaleString() }}</span>
-                </div>
-                <p class="comment-text">{{ comment.text }}</p>
-              </div>
-            </div>
-
-            <!-- Formulario de comentarios -->
-            <div class="comment-form">
-              <textarea 
-                v-model="item.newCommentText"
-                placeholder="Escribe tu comentario..."
-                maxlength="500"
-              ></textarea>
-              <button 
-                @click="addComment(section.type, item.src, item.newCommentText)"
-                :disabled="!item.newCommentText || !item.newCommentText.trim()"
-              >
-                Comentar
-              </button>
-            </div>
-          </div>
+        <div class="multimedia">
+          <h3>Videos</h3>
+          <video controls width="300">
+            <source src="./Multimedia/videos/Un trade cualquiera.mp4" type="video/mp4">
+            Tu navegador no soporta el elemento de video.
+          </video>
+          <p>Análisis detallado de una operación de trading en tiempo real, gestión del riesgo y control emocional.</p>
         </div>
-        
+        <div class="multimedia">
+          <h3>Documentos PDF</h3>
+          <a href="./Multimedia/PDFs/DiarioDeTrading(1).pdf" class="pdf-link" target="_blank" rel="noopener">Diario de Trading (PDF)</a>
+        </div>
+      </section>
+      <section id="ingenieria" tabindex="-1">
+        <h2>Ingeniería de Sistemas</h2>
+        <p>Como estudiante de Ingeniería de Sistemas, desarrollo habilidades en programación, análisis de sistemas, bases de datos y gestión de proyectos. Me interesa la aplicación de la tecnología para resolver problemas reales y optimizar procesos.</p>
+        <ul>
+          <li>Programación en Python, Java y JavaScript</li>
+          <li>Diseño y análisis de algoritmos</li>
+          <li>Gestión de bases de datos relacionales y no relacionales</li>
+          <li>Metodologías ágiles y trabajo en equipo</li>
+        </ul>
+      </section>
+      <section id="desarrollo-web" tabindex="-1">
+        <h2>Desarrollo Web</h2>
+        <p>Actualmente me encuentro en formación como desarrollador web, aprendiendo HTML, CSS y JavaScript. Me interesa crear sitios accesibles, modernos y funcionales, aplicando buenas prácticas y diseño responsive.</p>
+        <ul>
+          <li>HTML5 semántico y accesible</li>
+          <li>CSS moderno y frameworks como Tailwind CSS</li>
+          <li>JavaScript para interactividad y lógica de frontend</li>
+          <li>Proyectos personales y colaborativos</li>
+        </ul>
+      </section>
+      <section id="contacto" tabindex="-1">
+        <h2>Contacto</h2>
+        <form class="contact-form" aria-label="Formulario de contacto">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" required />
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" name="email" required />
+          <label for="mensaje">Mensaje</label>
+          <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+          <button type="submit">Enviar</button>
+        </form>
+        <p>Puedes contactarme también a través de mis redes sociales:</p>
+        <ul>
+          <li><a href="#" aria-label="Perfil de Twitter">Twitter</a></li>
+          <li><a href="#" aria-label="Perfil de LinkedIn">LinkedIn</a></li>
+        </ul>
       </section>
     </main>
+    <footer class="footer" role="contentinfo">
+      <p>&copy; 2024 Oscar Guerra. Todos los derechos reservados.</p>
+    </footer>
   </div>
-  
-
-  <script>
-    const app = Vue.createApp({
-      data() {
-        return {
-          title: "Oscar Guerra Dev and Trader",
-          searchQuery: '',
-          filterType: 'all',
-          favorites: JSON.parse(localStorage.getItem('favorites') || '{}'),
-          multimediaSections: [
-            {
-              title: "Podcast",
-              type: "audio",
-              items: [
-                { 
-                  src: "./Multimedia/audios/PodcastOscarGuerraEsp.wav",
-                  description: "En este episodio fascinante, exploramos las complejidades del trading moderno y el desarrollo de software. Comenzamos analizando cómo la tecnología ha revolucionado los mercados financieros, desde los algoritmos de trading automatizado hasta la influencia de la inteligencia artificial en la toma de decisiones. Discutimos las estrategias fundamentales que todo trader debería conocer, incluyendo el análisis técnico, la gestión del riesgo y la importancia de mantener un diario de trading detallado. También abordamos cómo la psicología del trading afecta nuestras decisiones y compartimos técnicas prácticas para mantener el control emocional durante las operaciones. Además, examinamos la intersección entre el trading y el desarrollo de software, explorando cómo las habilidades de programación pueden mejorar significativamente la eficiencia y precisión del trading. Compartimos experiencias personales sobre el desarrollo de indicadores personalizados y sistemas automatizados, destacando la importancia de la prueba y optimización continua."
-                },
-                { 
-                  src: "./Multimedia/audios/PodcastOscarGuerraIng.wav",
-                  description: "In this enlightening episode, we delve into the world of modern trading and software development. We explore how technology has transformed financial markets, from automated trading algorithms to the impact of artificial intelligence on decision-making. We discuss essential trading strategies, including technical analysis, risk management, and the importance of maintaining a detailed trading journal. The psychology of trading and its influence on our decisions is examined, along with practical techniques for maintaining emotional control during trades. We also investigate the intersection of trading and software development, exploring how programming skills can significantly enhance trading efficiency and accuracy. Personal experiences in developing custom indicators and automated systems are shared, emphasizing the importance of continuous testing and optimization."
-                },
-                { src: "audio3.mp3" },
-              ],
-            },
-            {
-              title: "Videos",
-              type: "video",
-              items: [
-                { 
-                  src: "./Multimedia/videos/Un trade cualquiera.mp4",
-                  description: "En este video educativo, realizamos un análisis detallado de una operación de trading en tiempo real. Comenzamos explicando el proceso de identificación de oportunidades de mercado utilizando análisis técnico avanzado, incluyendo el uso de indicadores personalizados y patrones de precio. Observamos cómo se desarrolla la configuración del trade, desde la identificación inicial de la señal hasta la ejecución de la entrada. Durante el video, compartimos insights sobre la gestión del riesgo, el dimensionamiento de la posición y la importancia de mantener un plan de trading disciplinado. También discutimos los aspectos psicológicos que surgen durante la operación y cómo manejar las emociones efectivamente. Este video sirve como una guía práctica para traders de todos los niveles, demostrando cómo aplicar conceptos teóricos en situaciones reales de mercado."
-                },
-                { 
-                  src: "./Multimedia/videos/Norecuerdo.mp4",
-                  description: "Este video explora las mejores prácticas en el desarrollo de software para trading. Comenzamos con una introducción a los principios fundamentales de la programación aplicada a los mercados financieros, incluyendo la importancia de la eficiencia del código y la gestión de datos en tiempo real. Analizamos diferentes frameworks y tecnologías comúnmente utilizadas en el desarrollo de sistemas de trading, destacando sus ventajas y limitaciones. También discutimos la implementación de estrategias de backtesting y la importancia de la optimización del código para el trading de alta frecuencia. El video incluye ejemplos prácticos de código y demostraciones de herramientas populares utilizadas en la industria."
-                },
-                { 
-                  src: "./Multimedia/videos/Trade.mp4",
-                  description: "Este video explora las mejores prácticas en el desarrollo de software para trading. Comenzamos con una introducción a los principios fundamentales de la programación aplicada a los mercados financieros, incluyendo la importancia de la eficiencia del código y la gestión de datos en tiempo real. Analizamos diferentes frameworks y tecnologías comúnmente utilizadas en el desarrollo de sistemas de trading, destacando sus ventajas y limitaciones. También discutimos la implementación de estrategias de backtesting y la importancia de la optimización del código para el trading de alta frecuencia. El video incluye ejemplos prácticos de código y demostraciones de herramientas populares utilizadas en la industria."
-                },
-                { 
-                  src: "./Multimedia/videos/Uno-Uno.mp4",
-                  description: "Este video explora las mejores prácticas en el desarrollo de software para trading. Comenzamos con una introducción a los principios fundamentales de la programación aplicada a los mercados financieros, incluyendo la importancia de la eficiencia del código y la gestión de datos en tiempo real. Analizamos diferentes frameworks y tecnologías comúnmente utilizadas en el desarrollo de sistemas de trading, destacando sus ventajas y limitaciones. También discutimos la implementación de estrategias de backtesting y la importancia de la optimización del código para el trading de alta frecuencia. El video incluye ejemplos prácticos de código y demostraciones de herramientas populares utilizadas en la industria."
-                },
-                { 
-                  src: "./Multimedia/videos/Positivo.mp4",
-                  description: "Este video explora las mejores prácticas en el desarrollo de software para trading. Comenzamos con una introducción a los principios fundamentales de la programación aplicada a los mercados financieros, incluyendo la importancia de la eficiencia del código y la gestión de datos en tiempo real. Analizamos diferentes frameworks y tecnologías comúnmente utilizadas en el desarrollo de sistemas de trading, destacando sus ventajas y limitaciones. También discutimos la implementación de estrategias de backtesting y la importancia de la optimización del código para el trading de alta frecuencia. El video incluye ejemplos prácticos de código y demostraciones de herramientas populares utilizadas en la industria."
-                },                                     
-              
-              ],
-            },
-            {
-              title: "Documentos PDF",
-              type: "pdf",
-              items: [
-                { src: "./Multimedia/PDFs/DiarioDeTrading(1).pdf" },
-              ],
-            },
-          ],
-          currentPage: 1,
-          itemsPerPage: 5,
-          isDarkMode: localStorage.getItem('darkMode') === 'true',
-          playlists: [],
-          selectedPlaylist: null,
-          newTag: '',
-          comments: {
-            video: {},
-            audio: {}
-          }
-        };
-      },
-      computed: {
-        paginatedSections() {
-          const start = (this.currentPage - 1) * this.itemsPerPage;
-          const end = start + this.itemsPerPage;
-          return this.filteredSections.slice(start, end);
-        },
-        totalPages() {
-          return Math.ceil(this.filteredSections.length / this.itemsPerPage);
-        }
-      },
-      methods: {
-        filterContent() {
-          // Implementar lógica de filtrado
-        },
-        toggleFavorite(type, item) {
-          const key = `${type}-${item.src}`;
-          if (this.favorites[key]) {
-            delete this.favorites[key];
-          } else {
-            this.favorites[key] = item;
-          }
-          localStorage.setItem('favorites', JSON.stringify(this.favorites));
-        },
-        isFavorite(type, item) {
-          return !!this.favorites[`${type}-${item.src}`];
-        },
-        handleVideoError(e) {
-          e.target.closest('.item').error = 'Error al cargar el video';
-        },
-        toggleDarkMode() {
-          this.isDarkMode = !this.isDarkMode;
-          localStorage.setItem('darkMode', this.isDarkMode);
-        },
-        createPlaylist(type) {
-          const name = prompt('Nombre de la playlist:');
-          if (name) {
-            const playlist = {
-              id: Date.now(),
-              name,
-              type,
-              items: []
-            };
-            this.playlists.push(playlist);
-            localStorage.setItem('playlists', JSON.stringify(this.playlists));
-          }
-        },
-        addToPlaylist(item) {
-          if (!this.selectedPlaylist) return;
-          const playlist = this.playlists.find(p => p.id === this.selectedPlaylist);
-          if (playlist && !playlist.items.includes(item.src)) {
-            playlist.items.push(item.src);
-            localStorage.setItem('playlists', JSON.stringify(this.playlists));
-          }
-        },
-        shareContent(item, platform) {
-          const url = encodeURIComponent(window.location.href);
-          const title = encodeURIComponent(item.name || 'Contenido compartido');
-          
-          const shareUrls = {
-            facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-            twitter: `https://twitter.com/intent/tweet?url=${url}&text=${title}`,
-            whatsapp: `https://wa.me/?text=${title}%20${url}`
-          };
-          
-          window.open(shareUrls[platform], '_blank');
-        },
-        addTag(item) {
-          if (!this.newTag.trim()) return;
-          if (!item.tags) item.tags = [];
-          if (!item.tags.includes(this.newTag)) {
-            item.tags.push(this.newTag);
-          }
-          this.newTag = '';
-        },
-        removeTag(item, tag) {
-          item.tags = item.tags.filter(t => t !== tag);
-        },
-        trackView(item) {
-          if (!item.views) item.views = 0;
-          item.views++;
-          item.lastViewed = new Date();
-        },
-        formatLastViewed(date) {
-          if (!date) return 'Nunca visto';
-          return new Date(date).toLocaleDateString();
-        },
-        getComments(mediaType, mediaId) {
-          if (!this.comments[mediaType]) {
-            this.comments[mediaType] = {};
-          }
-          if (!this.comments[mediaType][mediaId]) {
-            this.comments[mediaType][mediaId] = [];
-          }
-          return this.comments[mediaType][mediaId];
-        },
-        addComment(mediaType, mediaId, commentText) {
-          if (!commentText || !commentText.trim()) {
-            return;
-          }
-
-          const comment = {
-            id: Date.now(),
-            author: 'Usuario', // Puedes cambiarlo por el nombre del usuario actual
-            text: commentText.trim(),
-            timestamp: new Date().toISOString()
-          };
-
-          if (!this.comments[mediaType]) {
-            this.comments[mediaType] = {};
-          }
-          if (!this.comments[mediaType][mediaId]) {
-            this.comments[mediaType][mediaId] = [];
-          }
-
-          this.comments[mediaType][mediaId].push(comment);
-          
-          // Limpiar el campo de comentario
-          const item = this.multimediaSections
-            .find(section => section.type === mediaType)
-            .items.find(item => item.src === mediaId);
-          
-          if (item) {
-            item.newCommentText = '';
-          }
-
-          // Opcional: Guardar en localStorage
-          localStorage.setItem('comments', JSON.stringify(this.comments));
-        }
-      },
-      mounted() {
-        // Cargar comentarios guardados al iniciar
-        const savedComments = localStorage.getItem('comments');
-        if (savedComments) {
-          this.comments = JSON.parse(savedComments);
-        }
-      }
-    });
-
-    app.mount("#app");
-  </script>
-    <div id="app"></div>
-    <button @click="toggleDarkMode" class="theme-toggle">
-      {{ isDarkMode ? '☀️' : '🌙' }}
-    </button>
-    <!-- Contenido existente -->
-  </div>
-  
 </body>
 </html>
