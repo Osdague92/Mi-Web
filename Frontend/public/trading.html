@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oscar Guerra | Trading</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="header">
+    <img src="assets/img/me .jpg" alt="Oscar Avatar" class="logo" />
+    <h1>Oscar Guerra Dev & Trader</h1>
+    <nav class="search-container">
+      <a href="index.html">Inicio</a>
+      <a href="trading.html">Trading</a>
+      <a href="#">Proyectos</a>
+      <a href="#">Contacto</a>
+    </nav>
+  </header>
+
+  <main class="content">
+
+    <section class="multimedia">
+      <h2>Podcast</h2>
+      <div class="audio-container">
+        <audio controls src="assets/audios/PodcastOscarGuerraEsp.wav"></audio>
+        <p>Exploramos el trading real.</p>
+      </div>
+      <div class="audio-container">
+        <audio controls src="assets/audios/PodcastOScarGuerraIng.wav"></audio>
+        <p>Hablamos sobre automatización, IA.</p>
+      </div>
+    </section>
+
+    <section class="multimedia">
+      <h2>Videos</h2>
+      <div class="video-container">
+        <video controls src="assets/videos/Norecuerdo.mp4"></video>
+      </div>
+      <p>Análisis en tiempo real de una operación de trading.</p>
+    </section>
+
+    <section class="multimedia comments-section">
+      <h2>Comentarios</h2>
+      <div class="comments-list" id="comments-list"></div>
+      <form class="comment-form" id="comment-form">
+        <textarea id="comment-text" placeholder="Escribe tu comentario..."></textarea>
+        <button type="submit">Publicar</button>
+      </form>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
