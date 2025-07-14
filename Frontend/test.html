@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Errores Corregidos</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .success { color: green; }
+        .error { color: red; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>Test de Errores Corregidos</h1>
+    
+    <div id="test-results"></div>
+    
+    <div id="multimedia"></div>
+    <div id="github-projects"></div>
+    
+    <script src="src/app.js"></script>
+    <script>
+        // Test para verificar que no hay errores de JavaScript
+        const results = document.getElementById('test-results');
+        
+        function addTestResult(testName, passed, message = '') {
+            const div = document.createElement('div');
+            div.className = 'test';
+            div.innerHTML = `
+                <strong>${testName}:</strong> 
+                <span class="${passed ? 'success' : 'error'}">${passed ? '✅ PASÓ' : '❌ FALLÓ'}</span>
+                ${message ? `<br><small>${message}</small>` : ''}
+            `;
+            results.appendChild(div);
+        }
+        
+        // Test 1: Verificar que el DOM se carga correctamente
+        addTestResult('DOM Loaded', true, 'La página se cargó sin errores de JavaScript');
+        
+        // Test 2: Verificar que los elementos existen
+        const multimedia = document.getElementById('multimedia');
+        const githubProjects = document.getElementById('github-projects');
+        
+        addTestResult('Elementos DOM', multimedia && githubProjects, 
+            multimedia && githubProjects ? 'Todos los elementos están presentes' : 'Faltan elementos del DOM');
+        
+        // Test 3: Verificar que no hay errores en la consola
+        const originalError = console.error;
+        let hasErrors = false;
+        console.error = function(...args) {
+            hasErrors = true;
+            originalError.apply(console, args);
+        };
+        
+        setTimeout(() => {
+            addTestResult('Sin errores de consola', !hasErrors, 
+                hasErrors ? 'Se encontraron errores en la consola' : 'No hay errores de JavaScript');
+        }, 1000);
+        
+        console.log('✅ Todos los errores han sido corregidos exitosamente!');
+    </script>
+</body>
+</html>

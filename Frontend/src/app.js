@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const multimediaContainer = document.getElementById("multimedia");
   const searchInput = document.getElementById("searchInput");
+  const githubProjectsContainer = document.getElementById("github-projects");
 
   const multimediaData = [
     {
@@ -44,6 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   function renderContent(data) {
+    if (!multimediaContainer) return;
+    
     multimediaContainer.innerHTML = "";
 
     data.forEach((section, sectionIndex) => {
@@ -132,90 +135,105 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Buscador
-  searchInput.addEventListener("input", () => {
-    const query = searchInput.value.toLowerCase();
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
 
-    const filteredData = multimediaData.map(section => {
-      const filteredItems = section.items.filter(item =>
-        item.description.toLowerCase().includes(query)
-      );
-      return {
-        ...section,
-        items: filteredItems
-      };
-    }).filter(section => section.items.length > 0);
+      const filteredData = multimediaData.map(section => {
+        const filteredItems = section.items.filter(item =>
+          item.description.toLowerCase().includes(query)
+        );
+        return {
+          ...section,
+          items: filteredItems
+        };
+      }).filter(section => section.items.length > 0);
 
-    renderContent(filteredData);
-  });
+      renderContent(filteredData);
+    });
+  }
 
-  renderContent(multimediaData);
+  // Renderizar contenido multimedia si existe el contenedor
+  if (multimediaContainer) {
+    renderContent(multimediaData);
+  }
+
+  // Cargar proyectos de GitHub
+  if (githubProjectsContainer) {
+    loadGitHubProjects();
+  }
 });
 
-  // Usuario de GitHub
+// Función para cargar proyectos de GitHub
+function loadGitHubProjects() {
+  const githubProjectsContainer = document.getElementById("github-projects");
+  const GITHUB_USERNAME = "Osdague92";
+  
+  const languageIcons = {
+    "JavaScript": "🟨",
+    "HTML": "🟥",
+    "CSS": "🟦",
+    "Python": "🐍",
+    "TypeScript": "🔷",
+    "Shell": "🐚",
+    "Dockerfile": "🐳",
+    "Java": "☕",
+    "C++": "💠",
+    "C": "🧱",
+    "Go": "🐹",
+    "PHP": "🐘"
+  };
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const githubProjectsContainer = document.getElementById("github-projects");
-    const GITHUB_USERNAME = "Osdague92";
-    
-  
-    const languageIcons = {
-      "JavaScript": "🟨",
-      "HTML": "🟥",
-      "CSS": "🟦",
-      "Python": "🐍",
-      "TypeScript": "🔷",
-      "Shell": "🐚",
-      "Dockerfile": "🐳",
-      "Java": "☕",
-      "C++": "💠",
-      "C": "🧱",
-      "Go": "🐹",
-      "PHP": "🐘"
-      // Puedes agregar más lenguajes aquí
-    };
-  
-    fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated`)
-      .then(response => response.json())
-      .then(repos => {
-        repos.forEach(repo => {
-          const projectEl = document.createElement("div");
-          projectEl.className = "project";
-  
-          const title = `<h3>${repo.name}</h3>`;
-          const desc = `<p>${repo.description || 'Sin descripción.'}</p>`;
-          const link = `<a href="${repo.html_url}" target="_blank">Ver en GitHub</a>`;
-  
-          const langEl = document.createElement("div");
-          langEl.className = "project-langs";
-  
-          fetch(repo.languages_url)
-            .then(langRes => langRes.json())
-            .then(langs => {
-              const langList = Object.keys(langs)
-                .map(lang => {
-                  const icon = languageIcons[lang] || "📄";
-                  return `<span class="lang">${icon} ${lang}</span>`;
-                })
-                .join("");
-              langEl.innerHTML = langList;
-            });
-  
-          projectEl.innerHTML = `${title}${desc}${link}`;
-          projectEl.appendChild(langEl);
-  
-          githubProjectsContainer.appendChild(projectEl);
-        });
-      })
-      .catch(error => {
-        githubProjectsContainer.innerHTML = "<p>No se pudieron cargar los proyectos de GitHub.</p>";
-        console.error("Error al cargar GitHub repos:", error);
+  fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated`)
+    .then(response => response.json())
+    .then(repos => {
+      repos.forEach(repo => {
+        const projectEl = document.createElement("div");
+        projectEl.className = "project";
+
+        const title = `<h3>${repo.name}</h3>`;
+        const desc = `<p>${repo.description || 'Sin descripción.'}</p>`;
+        const link = `<a href="${repo.html_url}" target="_blank">Ver en GitHub</a>`;
+
+        const langEl = document.createElement("div");
+        langEl.className = "project-langs";
+
+        fetch(repo.languages_url)
+          .then(langRes => langRes.json())
+          .then(langs => {
+            const langList = Object.keys(langs)
+              .map(lang => {
+                const icon = languageIcons[lang] || "📄";
+                return `<span class="lang">${icon} ${lang}</span>`;
+              })
+              .join("");
+            langEl.innerHTML = langList;
+          })
+          .catch(error => {
+            console.error("Error al cargar lenguajes:", error);
+          });
+
+        projectEl.innerHTML = `${title}${desc}${link}`;
+        projectEl.appendChild(langEl);
+
+        githubProjectsContainer.appendChild(projectEl);
       });
-  });
-    // Toggle de visibilidad con ícono 📁 ↔ 📂
-    const toggleTitle = document.getElementById("toggle-proyectos");
+    })
+    .catch(error => {
+      githubProjectsContainer.innerHTML = "<p>No se pudieron cargar los proyectos de GitHub.</p>";
+      console.error("Error al cargar GitHub repos:", error);
+    });
+}
 
+// Toggle de visibilidad para proyectos
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleTitle = document.getElementById("toggle-proyectos");
+  const githubProjectsContainer = document.getElementById("github-projects");
+  
+  if (toggleTitle && githubProjectsContainer) {
     toggleTitle.addEventListener("click", () => {
       githubProjectsContainer.classList.toggle("hidden");
-  
     });
+  }
+});
   

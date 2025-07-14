@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "npx http-server public -p 3000 -o",
+    "dev": "npx http-server public -p 3000 -o",
+    "build": "echo 'Build completed'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,5 +15,8 @@
   "dependencies": {
     "firebase": "^11.3.0",
     "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
   }
 }
