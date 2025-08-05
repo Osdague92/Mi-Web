@@ -1,221 +1,154 @@
+// Este evento se asegura de que el script se ejecute solo cuando todo el HTML esté cargado.
 document.addEventListener("DOMContentLoaded", () => {
-  const multimediaContainer = document.getElementById("multimedia");
-  const searchInput = document.getElementById("searchInput");
 
-  const multimediaData = [
-    {
-      type: "audio",
-      title: "Podcast",
-      items: [
-        {
-          src: "assets/audios/PodcastOscarGuerraEsp.wav",
-          description: "Exploramos el trading moderno y el desarrollo de software."
-        },
-        {
-          src: "assets/audios/PodcastOscarGuerraIng.wav",
-          description: "Hablamos sobre automatización, IA y decisiones financieras."
-        }
-      ]
-    },
-    {
-      type: "video",
-      title: "Videos",
-      items: [
-        {
-          src: "assets/videos/Un trade cualquiera.mp4",
-          description: "Análisis en tiempo real de una operación de trading."
-        },
-        {
-          src: "assets/videos/Norecuerdo.mp4",
-          description: "Buenas prácticas en desarrollo de software para trading."
-        }
-      ]
-    },
-    {
-      type: "pdf",
-      title: "Documentos PDF",
-      items: [
-        {
-          src: "assets/pdfs/DiarioDeTrading(1).pdf",
-          description: "Tu diario de trading personal para anotar tus operaciones."
-        }
-      ]
-    }
-  ];
-
-  function renderContent(data) {
-    multimediaContainer.innerHTML = "";
-
-    data.forEach((section, sectionIndex) => {
-      const sectionEl = document.createElement("section");
-      sectionEl.className = "multimedia";
-
-      const title = document.createElement("h2");
-      title.textContent = section.title;
-      sectionEl.appendChild(title);
-
-      section.items.forEach((item, itemIndex) => {
-        const itemDiv = document.createElement("div");
-        itemDiv.className = "item item-content";
-
-        // Media
-        let mediaElement;
-        if (section.type === "audio") {
-          mediaElement = document.createElement("audio");
-          mediaElement.controls = true;
-          mediaElement.innerHTML = `<source src="${item.src}" type="audio/mpeg">`;
-        } else if (section.type === "video") {
-          mediaElement = document.createElement("div");
-          mediaElement.className = "video-container";
-          mediaElement.innerHTML = `
-            <video controls>
-              <source src="${item.src}" type="video/mp4">
-            </video>`;
-        } else if (section.type === "pdf") {
-          mediaElement = document.createElement("a");
-          mediaElement.href = item.src;
-          mediaElement.target = "_blank";
-          mediaElement.className = "pdf-link";
-          mediaElement.textContent = "Ver PDF";
-        }
-
-        const desc = document.createElement("p");
-        desc.textContent = item.description;
-
-        // Comentarios (simples en frontend)
-        const commentsDiv = document.createElement("div");
-        commentsDiv.className = "comments-section";
-        commentsDiv.innerHTML = `
-          <h4>Comentarios</h4>
-          <div class="comments-list" id="comments-${sectionIndex}-${itemIndex}"></div>
-          <form class="comment-form" data-section="${sectionIndex}" data-item="${itemIndex}">
-            <textarea placeholder="Escribe un comentario..." required></textarea>
-            <button type="submit">Publicar</button>
-          </form>
-        `;
-
-        itemDiv.appendChild(mediaElement);
-        itemDiv.appendChild(desc);
-        itemDiv.appendChild(commentsDiv);
-        sectionEl.appendChild(itemDiv);
-      });
-
-      multimediaContainer.appendChild(sectionEl);
-    });
-  }
-
-  // Sistema de comentarios (solo en frontend, sin backend aún)
-  document.addEventListener("submit", (e) => {
-    if (e.target.matches(".comment-form")) {
-      e.preventDefault();
-      const textarea = e.target.querySelector("textarea");
-      const text = textarea.value.trim();
-      if (!text) return;
-
-      const sectionIndex = e.target.dataset.section;
-      const itemIndex = e.target.dataset.item;
-      const commentList = document.getElementById(`comments-${sectionIndex}-${itemIndex}`);
-
-      const commentEl = document.createElement("div");
-      commentEl.className = "comment";
-      commentEl.innerHTML = `
-        <div class="comment-header">
-          <span>Usuario anónimo</span>
-          <span class="comment-date">${new Date().toLocaleString()}</span>
-        </div>
-        <p class="comment-text">${text}</p>
-      `;
-
-      commentList.appendChild(commentEl);
-      textarea.value = "";
-    }
-  });
-
-  // Buscador
-  searchInput.addEventListener("input", () => {
-    const query = searchInput.value.toLowerCase();
-
-    const filteredData = multimediaData.map(section => {
-      const filteredItems = section.items.filter(item =>
-        item.description.toLowerCase().includes(query)
-      );
-      return {
-        ...section,
-        items: filteredItems
-      };
-    }).filter(section => section.items.length > 0);
-
-    renderContent(filteredData);
-  });
-
-  renderContent(multimediaData);
-});
-
-  // Usuario de GitHub
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const githubProjectsContainer = document.getElementById("github-projects");
+  // =================================================
+  // --- CARGADOR DE PROYECTOS DE GITHUB ---
+  // =================================================
+  // Esta parte del código solo se ejecutará si encuentra el contenedor de proyectos en la página.
+  const githubProjectsContainer = document.getElementById("github-projects");
+  if (githubProjectsContainer) {
     const GITHUB_USERNAME = "Osdague92";
-    
-  
-    const languageIcons = {
-      "JavaScript": "🟨",
-      "HTML": "🟥",
-      "CSS": "🟦",
-      "Python": "🐍",
-      "TypeScript": "🔷",
-      "Shell": "🐚",
-      "Dockerfile": "🐳",
-      "Java": "☕",
-      "C++": "💠",
-      "C": "🧱",
-      "Go": "🐹",
-      "PHP": "🐘"
-      // Puedes agregar más lenguajes aquí
+
+    // --- ¡IMPORTANTE! MEJORA TUS DESCRIPCIONES AQUÍ ---
+    // Añade tus repositorios clave aquí con descripciones que vendan el proyecto.
+    // Si un repo no está aquí, usará la descripción de GitHub por defecto.
+    const customProjectDetails = {
+      "MiChatbotOscar": {
+        description: "Un chatbot que procesa lenguaje natural para automatizar respuestas, mejorando la interacción y la eficiencia del usuario.",
+        tags: ["Python", "PLN", "NLTK"]
+      },
+      "ProyectoPrecipitaciones": {
+        description: "Modelo de Machine Learning que predice precipitaciones mensuales usando datos históricos para optimizar decisiones en agricultura y gestión hídrica.",
+        tags: ["Python", "Machine Learning", "Pandas", "Scikit-learn"]
+      },
+      "ContratosApp": {
+          description: "Aplicación para la gestión y ordenamiento de contratos, facilitando la búsqueda y el seguimiento de documentos importantes.",
+          tags: ["JavaScript", "HTML", "CSS"]
+      },
+      "fullstack-docker": {
+          description: "Prueba de entrevista que demuestra la creación de un entorno de desarrollo full-stack contenerizado con Docker.",
+          tags: ["Docker", "Full-Stack", "JavaScript"]
+      }
+      // Añade más proyectos clave aquí...
     };
-  
-    fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated`)
-      .then(response => response.json())
+
+    // Muestra un estado de carga inicial
+    githubProjectsContainer.innerHTML = "<p>Cargando proyectos desde GitHub...</p>";
+
+    fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=12`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('La respuesta de la red no fue exitosa.');
+        }
+        return response.json();
+      })
       .then(repos => {
+        githubProjectsContainer.innerHTML = ""; // Limpiar el mensaje de carga
         repos.forEach(repo => {
-          const projectEl = document.createElement("div");
-          projectEl.className = "project";
-  
-          const title = `<h3>${repo.name}</h3>`;
-          const desc = `<p>${repo.description || 'Sin descripción.'}</p>`;
-          const link = `<a href="${repo.html_url}" target="_blank">Ver en GitHub</a>`;
-  
-          const langEl = document.createElement("div");
-          langEl.className = "project-langs";
-  
-          fetch(repo.languages_url)
-            .then(langRes => langRes.json())
-            .then(langs => {
-              const langList = Object.keys(langs)
-                .map(lang => {
-                  const icon = languageIcons[lang] || "📄";
-                  return `<span class="lang">${icon} ${lang}</span>`;
-                })
-                .join("");
-              langEl.innerHTML = langList;
-            });
-  
-          projectEl.innerHTML = `${title}${desc}${link}`;
-          projectEl.appendChild(langEl);
-  
-          githubProjectsContainer.appendChild(projectEl);
+          // Usa detalles personalizados si existen, si no, los de la API
+          const details = customProjectDetails[repo.name] || {
+            description: repo.description || 'No hay descripción disponible.',
+            tags: [repo.language].filter(Boolean) // Usa el lenguaje principal como tag por defecto
+          };
+
+          const projectCard = document.createElement("div");
+          projectCard.className = "project-card";
+
+          // Genera las etiquetas de tecnología
+          const tagsHTML = details.tags.map(tag => `<span>${tag}</span>`).join('');
+
+          projectCard.innerHTML = `
+            <h3>${repo.name}</h3>
+            <p>${details.description}</p>
+            <div class="tech-tags">
+                ${tagsHTML}
+            </div>
+            <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">Ver en GitHub →</a>
+          `;
+          githubProjectsContainer.appendChild(projectCard);
         });
       })
       .catch(error => {
-        githubProjectsContainer.innerHTML = "<p>No se pudieron cargar los proyectos de GitHub.</p>";
-        console.error("Error al cargar GitHub repos:", error);
+        githubProjectsContainer.innerHTML = "<p>Error al cargar los proyectos. Inténtalo de nuevo más tarde.</p>";
+        console.error("Error al cargar repositorios de GitHub:", error);
       });
-  });
-    // Toggle de visibilidad con ícono 📁 ↔ 📂
-    const toggleTitle = document.getElementById("toggle-proyectos");
+  }
 
-    toggleTitle.addEventListener("click", () => {
-      githubProjectsContainer.classList.toggle("hidden");
-  
+
+  // =================================================
+  // --- GESTOR DEL FORMULARIO DE CONTACTO ---
+  // =================================================
+  // Esta parte del código solo se ejecutará si encuentra el formulario en la página.
+  const contactForm = document.getElementById("contact-form");
+  if (contactForm) {
+    contactForm.addEventListener("submit", (e) => {
+      e.preventDefault(); // Previene que la página se recargue
+
+      const name = contactForm.querySelector("#name").value;
+      const email = contactForm.querySelector("#email").value;
+      const interest = contactForm.querySelector("#interest").value;
+      const message = contactForm.querySelector("#message").value;
+      const submitButton = contactForm.querySelector("button");
+
+      // Deshabilita el botón para evitar envíos múltiples
+      submitButton.disabled = true;
+      submitButton.textContent = "Enviando...";
+      
+      // --- TU LÓGICA DE FIREBASE VA AQUÍ ---
+      // 1. Asegúrate de tener tu archivo firebase.js con tu configuración e importado.
+      // 2. Importa las funciones necesarias: import { getFirestore, collection, addDoc } from "firebase/firestore";
+      // 3. Descomenta y adapta el siguiente bloque de código.
+
+      /*
+      // --- INICIO DEL CÓDIGO DE FIREBASE (EJEMPLO) ---
+      
+      // Obtén la instancia de Firestore desde tu archivo de configuración
+      // import { db } from './firebase.js'; 
+      
+      try {
+        const docRef = await addDoc(collection(db, "contactos"), {
+          name: name,
+          email: email,
+          interest: interest,
+          message: message,
+          timestamp: new Date()
+        });
+        
+        console.log("Documento escrito con ID: ", docRef.id);
+        submitButton.style.backgroundColor = "#28a745"; // Verde de éxito
+        submitButton.textContent = "¡Mensaje Enviado!";
+        contactForm.reset(); // Limpia el formulario
+
+      } catch (error) {
+        console.error("Error al añadir el documento: ", error);
+        submitButton.style.backgroundColor = "#dc3545"; // Rojo de error
+        submitButton.textContent = "Error al Enviar";
+        alert("Hubo un error al enviar tu mensaje. Por favor, inténtalo de nuevo.");
+      } finally {
+        // Vuelve a habilitar el botón después de unos segundos
+        setTimeout(() => {
+          submitButton.disabled = false;
+          submitButton.style.backgroundColor = ""; // Vuelve al color original
+          submitButton.textContent = "Enviar Mensaje";
+        }, 4000);
+      }
+      
+      // --- FIN DEL CÓDIGO DE FIREBASE (EJEMPLO) ---
+      */
+
+      // --- SIMULACIÓN (BORRA ESTO CUANDO IMPLEMENTES FIREBASE) ---
+      console.log("Datos del formulario a enviar:", { name, email, interest, message });
+      setTimeout(() => {
+          submitButton.style.backgroundColor = "#28a745";
+          submitButton.textContent = "¡Mensaje Enviado!";
+          contactForm.reset();
+          setTimeout(() => {
+              submitButton.disabled = false;
+              submitButton.style.backgroundColor = "";
+              submitButton.textContent = "Enviar Mensaje";
+          }, 4000);
+      }, 1000);
+      // --- FIN DE LA SIMULACIÓN ---
     });
-  
+  }
+});

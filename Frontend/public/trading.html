@@ -4,44 +4,58 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Oscar Guerra | Trading</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <header class="header">
-    <img src="assets/img/me .jpg" alt="Oscar Avatar" class="logo" />
-    <h1>Oscar Guerra Dev & Trader</h1>
-    <nav class="search-container">
+    <img src="assets/img/me .jpg" alt="Oscar Guerra" class="logo" />
+    <h1>Contenido sobre Trading y Mercados</h1>
+    <p>Aquí comparto mis análisis, estrategias y reflexiones sobre el mundo del trading cuantitativo y la automatización.</p>
+    <nav class="nav-container">
       <a href="index.html">Inicio</a>
       <a href="trading.html">Trading</a>
-      <a href="#">Proyectos</a>
-      <a href="#">Contacto</a>
+      <a href="proyectos.html">Proyectos</a>
+      <a href="contacto.html">Contacto</a>
     </nav>
   </header>
 
   <main class="content">
 
-    <section class="multimedia">
-      <h2>Podcast</h2>
-      <div class="audio-container">
-        <audio controls src="assets/audios/PodcastOscarGuerraEsp.wav"></audio>
-        <p>Exploramos el trading real.</p>
-      </div>
-      <div class="audio-container">
-        <audio controls src="assets/audios/PodcastOScarGuerraIng.wav"></audio>
-        <p>Hablamos sobre automatización, IA.</p>
-      </div>
+    <section class="section-card">
+        <h2>Mi Contenido Multimedia</h2>
+        <div class="multimedia-container">
+            <div class="audio-container">
+              <h3>Podcast: Trading Real</h3>
+              <audio controls src="assets/audios/PodcastOscarGuerraEsp.wav"></audio>
+              <p>Una exploración sin filtros del día a día en los mercados.</p>
+            </div>
+            <div class="audio-container">
+              <h3>Podcast: Automatización con IA</h3>
+              <audio controls src="assets/audios/PodcastOScarGuerraIng.wav"></audio>
+              <p>Conversación sobre cómo la IA está cambiando el juego del trading.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section-card">
+        <h2>Análisis en Video</h2>
+        <div class="video-container-wrapper">
+            <video controls src="assets/videos/Norecuerdo.mp4"></video>
+            <p>Análisis técnico y fundamental de una operación en tiempo real.</p>
+        </div>
     </section>
 
-    <section class="multimedia">
-      <h2>Videos</h2>
-      <div class="video-container">
-        <video controls src="assets/videos/Norecuerdo.mp4"></video>
-      </div>
-      <p>Análisis en tiempo real de una operación de trading.</p>
+    <section class="cta-section">
+      <h2>¿Interesado en Automatizar tu Trading?</h2>
+      <p>Lleva tus estrategias al siguiente nivel con un enfoque basado en datos. ¡Hablemos de tu proyecto!</p>
+      <a href="contacto.html" class="cta-button">Agendar una Consulta</a>
     </section>
 
-    <section class="multimedia comments-section">
+    <section class="section-card comments-section">
       <h2>Comentarios</h2>
       <div class="comments-list" id="comments-list"></div>
       <form class="comment-form" id="comment-form">

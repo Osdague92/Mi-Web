@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oscar Guerra | Contacto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="header">
+    <img src="assets/img/me .jpg" alt="Oscar Guerra" class="logo" />
+    <h1>Hablemos</h1>
+    <p>¿Tienes una idea para un proyecto o quieres mejorar tus estrategias de trading? Estoy aquí para ayudar.</p>
+    <nav class="nav-container">
+      <a href="index.html">Inicio</a>
+      <a href="trading.html">Trading</a>
+      <a href="proyectos.html">Proyectos</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+  </header>
+
+  <main class="content">
+
+    <section class="section-card">
+        <h2>Envíame un Mensaje</h2>
+        <form class="contact-form" id="contact-form">
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Correo Electrónico</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="interest">Estoy interesado en...</label>
+                <select id="interest" name="interest" required>
+                    <option value="" disabled selected>Selecciona una opción</option>
+                    <option value="desarrollo">Servicios de Desarrollo</option>
+                    <option value="trading">Servicios de Trading</option>
+                    <option value="otro">Otro</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="message">Mensaje</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
+            </div>
+            <button type="submit">Enviar Mensaje</button>
+        </form>
+    </section>
+
+    <div class="contact-info">
+        <p>También puedes encontrarme en:</p>
+        <p><strong>Email:</strong> <a href="mailto:tuemail@ejemplo.com">tuemail@ejemplo.com</a> | <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/tu-perfil" target="_blank">tu-perfil</a></p>
+    </div>
+
+  </main>
+
+  <script type="module" src="../src/app.js"></script>
+  </body>
+</html>
