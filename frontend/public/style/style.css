@@ -24,6 +24,25 @@ body {
     max-width: 800px;
     margin: 0.5rem auto; /* Centrar y limitar ancho del texto */
 }
+/* El nuevo contenedor para el botón de sesión en la esquina superior derecha */
+#auth-container {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+}
+
+#auth-container .cta-button {
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Animación profesional para el botón de sesión */
+#auth-container .cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  background-color: #34c7a9; /* Un tono ligeramente más brillante al pasar el cursor */
+}
 
 .logo {
   width: 150px;
@@ -187,7 +206,7 @@ body {
 /* CTA (Llamada a la acción) */
 .cta-section {
     text-align: center;
-    background-color: #2c3e50; /* Color oscuro para destacar */
+    background-color: #2A9D8F; /* Color oscuro para destacar */
     color: #ffffff;
     padding: 2.5rem;
     border-radius: 12px;
@@ -288,4 +307,76 @@ body {
     .multimedia-container {
         grid-template-columns: 1fr; /* Apila las columnas en móvil */
     }
+}
+/* =================================================
+   --- ESTILOS PARA TICKERS DE PRECIOS EN TIEMPO REAL ---
+   ================================================= */
+.price-tickers-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap; /* Para que se vea bien en móviles */
+    gap: 1.5rem; /* Espacio entre los tickers */
+    background: linear-gradient(40deg, #2f502c, #2A9D8F); /* Un fondo oscuro y elegante */
+    color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem; /* Separa los tickers del resto del contenido */
+}
+
+.ticker {
+    text-align: center;
+    min-width: 160px; /* Ancho mínimo para cada ticker */
+    flex-grow: 1;
+}
+
+.ticker-label {
+    display: block;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0.25rem;
+    text-transform: uppercase; /* Estilo profesional */
+}
+
+.ticker-price {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: bold;
+    letter-spacing: 1px; /* Espaciado para legibilidad */
+    color: #ffffff;
+    transition: color 0.4s ease, transform 0.2s ease; /* Transición suave para la animación */
+}
+
+/* Animación para cuando el precio se actualiza (usada por el JS) */
+.price-update {
+    color: #2ecc71; /* Verde brillante al actualizar */
+    transform: scale(1.08); /* Un pequeño salto para llamar la atención */
+}
+/* =================================================
+   --- MEJORAS DE UX PARA TICKERS DE PRECIOS ---
+   ================================================= */
+
+/* Estado inicial de carga */
+.ticker-price.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #ffffff;
+    animation: spin 1s ease-in-out infinite;
+    text-indent: -9999px; /* Oculta el texto "Cargando..." */
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Estado de error */
+.ticker-price.error {
+    color: #e74c3c; /* Rojo para indicar error */
+    font-size: 1.2rem;
+    font-weight: bold;
 }

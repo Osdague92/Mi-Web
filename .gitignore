@@ -1,0 +1,21 @@
+# Archivo .gitignore
+
+# Dependencias
+# Ignora las carpetas de módulos en CUALQUIER lugar del proyecto
+node_modules/
+
+# Archivos de entorno
+# ¡MUY IMPORTANTE! Nunca subas tus claves secretas o configuración local.
+.env
+
+# Archivos de registro (logs)
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos del editor
+.vscode/

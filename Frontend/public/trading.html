@@ -7,12 +7,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="./style/style.css" />
 </head>
 <body>
 
   <header class="header">
     <img src="assets/img/me .jpg" alt="Oscar Guerra" class="logo" />
+    <div id="auth-container">
+    <button id="login-btn" class="cta-button" style="padding: 0.5rem 1rem;">Iniciar Sesión</button>
+</div>
     <h1>Contenido sobre Trading y Mercados</h1>
     <p>Aquí comparto mis análisis, estrategias y reflexiones sobre el mundo del trading cuantitativo y la automatización.</p>
     <nav class="nav-container">
@@ -24,7 +27,24 @@
   </header>
 
   <main class="content">
-
+<section id="price-tickers" class="section-card price-tickers-container">
+    <div class="ticker">
+        <span class="ticker-label">Bitcoin (BTC)</span>
+        <span id="btc-price" class="ticker-price loading">Cargando...</span>
+    </div>
+    <div class="ticker">
+        <span class="ticker-label">Ethereum (ETH)</span>
+        <span id="eth-price" class="ticker-price loading">Cargando...</span>
+    </div>
+    <div class="ticker">
+        <span class="ticker-label">Cardano (ADA)</span>
+        <span id="ada-price" class="ticker-price loading">Cargando...</span>
+    </div>
+    <div class="ticker">
+        <span class="ticker-label">EUR/USD</span>
+        <span id="eurusd-price" class="ticker-price loading">Cargando...</span>
+    </div>
+</section>
     <section class="section-card">
         <h2>Mi Contenido Multimedia</h2>
         <div class="multimedia-container">
@@ -48,7 +68,6 @@
             <p>Análisis técnico y fundamental de una operación en tiempo real.</p>
         </div>
     </section>
-
     <section class="cta-section">
       <h2>¿Interesado en Automatizar tu Trading?</h2>
       <p>Lleva tus estrategias al siguiente nivel con un enfoque basado en datos. ¡Hablemos de tu proyecto!</p>
@@ -63,9 +82,9 @@
         <button type="submit">Publicar</button>
       </form>
     </section>
-
   </main>
+  
 
-  <script src="app.js"></script>
+  <script type="module" src="../src/app.js"></script>
 </body>
 </html>
