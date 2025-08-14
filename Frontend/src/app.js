@@ -8,6 +8,7 @@ import { initGithubProjects } from './services/githubService.js';
 import { initAuth } from './services/authService.js';
 import { initComments } from './services/commentService.js';
 import { initCookieBanner } from './ui/cookieBanner.js';
+import { initPriceTickers } from './services/priceService.js';
 
 // Se ejecuta cuando todo el HTML está listo.
 document.addEventListener("DOMContentLoaded", () => {
