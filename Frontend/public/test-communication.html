@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Comunicación Frontend-Backend</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .loading { background-color: #d1ecf1; color: #0c5460; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        .price-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .price-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .price-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test de Comunicación Frontend-Backend</h1>
+    
+    <div class="test-section">
+        <h2>1. Test de Conexión al Backend</h2>
+        <button onclick="testBackendConnection()">Probar Conexión Backend</button>
+        <div id="backend-status" class="status loading">Esperando prueba...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Test de API de Precios</h2>
+        <button onclick="testPriceAPI()">Obtener Precios</button>
+        <div id="api-status" class="status loading">Esperando prueba...</div>
+        <div id="price-display" class="price-display"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Test de Actualización Automática</h2>
+        <button onclick="startAutoUpdate()">Iniciar Actualización Automática</button>
+        <button onclick="stopAutoUpdate()">Detener Actualización</button>
+        <div id="auto-status" class="status loading">Esperando inicio...</div>
+    </div>
+
+    <script>
+        const BACKEND_URL = 'http://localhost:3000/api/prices';
+        let autoUpdateInterval = null;
+
+        async function testBackendConnection() {
+            const statusDiv = document.getElementById('backend-status');
+            statusDiv.className = 'status loading';
+            statusDiv.textContent = 'Probando conexión...';
+
+            try {
+                const response = await fetch(BACKEND_URL);
+                if (response.ok) {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Conexión exitosa al backend';
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = `❌ Error de conexión: ${error.message}`;
+            }
+        }
+
+        async function testPriceAPI() {
+            const statusDiv = document.getElementById('api-status');
+            const displayDiv = document.getElementById('price-display');
+            
+            statusDiv.className = 'status loading';
+            statusDiv.textContent = 'Obteniendo precios...';
+
+            try {
+                const response = await fetch(BACKEND_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if (!data || !data.crypto || !data.forex) {
+                    throw new Error('Estructura de datos inválida');
+                }
+
+                statusDiv.className = 'status success';
+                statusDiv.textContent = '✅ Precios obtenidos correctamente';
+
+                // Mostrar los precios
+                displayDiv.innerHTML = `
+                    <div class="price-card">
+                        <div>Bitcoin</div>
+                        <div class="price-value">$${data.crypto.bitcoin?.usd?.toLocaleString() || 'N/A'}</div>
+                    </div>
+                    <div class="price-card">
+                        <div>Ethereum</div>
+                        <div class="price-value">$${data.crypto.ethereum?.usd?.toLocaleString() || 'N/A'}</div>
+                    </div>
+                    <div class="price-card">
+                        <div>Cardano</div>
+                        <div class="price-value">$${data.crypto.cardano?.usd?.toFixed(4) || 'N/A'}</div>
+                    </div>
+                    <div class="price-card">
+                        <div>EUR/USD</div>
+                        <div class="price-value">$${data.forex.rates?.USD?.toFixed(4) || 'N/A'}</div>
+                    </div>
+                `;
+
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = `❌ Error al obtener precios: ${error.message}`;
+                displayDiv.innerHTML = '';
+            }
+        }
+
+        function startAutoUpdate() {
+            const statusDiv = document.getElementById('auto-status');
+            
+            if (autoUpdateInterval) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ La actualización automática ya está ejecutándose';
+                return;
+            }
+
+            statusDiv.className = 'status success';
+            statusDiv.textContent = '🔄 Actualización automática iniciada (cada 10 segundos)';
+
+            // Primera actualización inmediata
+            testPriceAPI();
+
+            // Actualización automática cada 10 segundos
+            autoUpdateInterval = setInterval(() => {
+                testPriceAPI();
+            }, 10000);
+        }
+
+        function stopAutoUpdate() {
+            const statusDiv = document.getElementById('auto-status');
+            
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+                statusDiv.className = 'status loading';
+                statusDiv.textContent = '⏹️ Actualización automática detenida';
+            } else {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ No hay actualización automática ejecutándose';
+            }
+        }
+
+        // Ejecutar tests automáticamente al cargar la página
+        window.addEventListener('load', () => {
+            setTimeout(testBackendConnection, 1000);
+            setTimeout(testPriceAPI, 2000);
+        });
+    </script>
+</body>
+</html>
