@@ -3,22 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.coingecko.com https://api.exchangerate-api.com;">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Oscar Guerra | Inicio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
 
   <header class="header">
-    <img src="assets/img/me .jpg" alt="Oscar Guerra" class="logo" />
+    <img src="assets/images/me .jpg" alt="Oscar Guerra" class="logo" />
     <div id="auth-container">
-    <button id="login-btn" class="cta-button" style="padding: 0.5rem 1rem;">Iniciar Sesión</button>
-</div>
+      <button id="login-btn" class="cta-button" style="padding: 0.5rem 1rem;">Iniciar Sesión</button>
+    </div>
     <h1>Oscar Guerra | Soluciones Digitales y Análisis de Mercados</h1>
     <p>Desarrollador Full-Stack y Analista Cuantitativo apasionado por la tecnología y los mercados financieros.</p>
-    <nav class="nav-container">
+    <nav class="nav-container" role="navigation" aria-label="Navegación principal">
       <a href="index.html">Inicio</a>
       <a href="trading.html">Trading</a>
       <a href="proyectos.html">Proyectos</a>
@@ -26,21 +31,23 @@
     </nav>
   </header>
 
-  <main class="content">
-    <section class="section-card">
-      <h2>Sobre Mí</h2>
-      <p>
-        Como <strong>desarrollador</strong>, me especializo en crear aplicaciones web eficientes y soluciones de IA que generan valor. Transformo ideas complejas en productos digitales intuitivos y escalables, utilizando tecnologías como JavaScript, Python y Machine Learning.
-      </p>
-      <p>
-        Como <strong>trader y analista</strong>, aplico un enfoque cuantitativo para la automatización de estrategias y el análisis de mercados, buscando optimizar el rendimiento y la gestión de riesgos a través de la tecnología.
-      </p>
+  <main class="content" role="main">
+    <section class="section-card" aria-labelledby="about-heading">
+      <h2 id="about-heading">Sobre Mí</h2>
+      <article>
+        <p>
+          Como <strong>desarrollador</strong>, me especializo en crear aplicaciones web eficientes y soluciones de IA que generan valor. Transformo ideas complejas en productos digitales intuitivos y escalables, utilizando tecnologías como JavaScript, Python y Machine Learning.
+        </p>
+        <p>
+          Como <strong>trader y analista</strong>, aplico un enfoque cuantitativo para la automatización de estrategias y el análisis de mercados, buscando optimizar el rendimiento y la gestión de riesgos a través de la tecnología.
+        </p>
+      </article>
     </section>
 
-    <section class="section-card">
-        <h2>¿Cómo Puedo Ayudarte?</h2>
+    <section class="section-card" aria-labelledby="services-heading">
+        <h2 id="services-heading">¿Cómo Puedo Ayudarte?</h2>
         <div class="services-container">
-            <div class="service-column">
+            <article class="service-column">
                 <h3>Desarrollo y Tecnología</h3>
                 <ul>
                     <li>Desarrollo de Aplicaciones Web a Medida</li>
@@ -48,8 +55,8 @@
                     <li>Automatización de Procesos y Scripts</li>
                     <li>Diseño de Landing Pages y Sitios Corporativos</li>
                 </ul>
-            </div>
-            <div class="service-column">
+            </article>
+            <article class="service-column">
                 <h3>Trading y Análisis Financiero</h3>
                 <ul>
                     <li>Desarrollo de Bots de Trading (Automatización)</li>
@@ -57,39 +64,44 @@
                     <li>Consultoría en Trading Algorítmico</li>
                     <li>Creación de Dashboards de Visualización</li>
                 </ul>
-            </div>
+            </article>
         </div>
     </section>
 
-    <section class="section-card">
-        <h2>Mi Stack Tecnológico</h2>
+    <section class="section-card" aria-labelledby="tech-stack-heading">
+        <h2 id="tech-stack-heading">Mi Stack Tecnológico</h2>
         <p>Me siento cómodo trabajando con un stack moderno enfocado en JavaScript y Python, incluyendo: HTML5, CSS3, ES6+, React, Node.js, Firebase, y librerías de Machine Learning como Scikit-learn y Pandas.</p>
     </section>
 
-    <section class="section-card">
-        <h2>Precios en Tiempo Real</h2>
-        <div id="price-tickers" class="price-tickers">
+    <section class="section-card" aria-labelledby="prices-heading">
+        <h2 id="prices-heading">Precios en Tiempo Real</h2>
+        <div id="price-tickers" class="price-tickers" role="region" aria-label="Precios de criptomonedas y divisas en tiempo real">
             <div class="ticker">
                 <span class="ticker-label">Bitcoin:</span>
-                <span id="btc-price" class="ticker-price loading">Cargando...</span>
+                <span id="btc-price" class="ticker-price loading" aria-live="polite">Cargando...</span>
             </div>
             <div class="ticker">
                 <span class="ticker-label">Ethereum:</span>
-                <span id="eth-price" class="ticker-price loading">Cargando...</span>
+                <span id="eth-price" class="ticker-price loading" aria-live="polite">Cargando...</span>
             </div>
             <div class="ticker">
                 <span class="ticker-label">Cardano:</span>
-                <span id="ada-price" class="ticker-price loading">Cargando...</span>
+                <span id="ada-price" class="ticker-price loading" aria-live="polite">Cargando...</span>
             </div>
             <div class="ticker">
                 <span class="ticker-label">EUR/USD:</span>
-                <span id="eurusd-price" class="ticker-price loading">Cargando...</span>
+                <span id="eurusd-price" class="ticker-price loading" aria-live="polite">Cargando...</span>
             </div>
         </div>
     </section>
     
     </main>
+
+    <footer class="footer" role="contentinfo">
+      <p>&copy; 2024 Oscar Guerra. Todos los derechos reservados.</p>
+      <p>Desarrollador Full-Stack y Analista Cuantitativo</p>
+    </footer>
   
-  <script type="module" src="../src/app.js"></script>
+  <script type="module" src="assets/js/app.js"></script>
 </body>
 </html>

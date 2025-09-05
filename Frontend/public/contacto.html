@@ -3,16 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.coingecko.com https://api.exchangerate-api.com;">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Oscar Guerra | Contacto</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
 
   <header class="header">
-    <img src="assets/img/me .jpg" alt="Oscar Guerra" class="logo" />
+    <img src="assets/images/me .jpg" alt="Oscar Guerra" class="logo" />
     <div id="auth-container">
     <button id="login-btn" class="cta-button" style="padding: 0.5rem 1rem;">Iniciar Sesión</button>
 </div>
@@ -58,11 +63,16 @@
 
     <div class="contact-info">
         <p>También puedes encontrarme en:</p>
-        <p><strong>Email:</strong> <a href="https://mail.google.com/mail/u/0/#inbox">osdague@gmail.com</a> | <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/oscarwar92/" target="_blank">Oscar Guerra</a></p>
+        <p><strong>Email:</strong> <a href="https://mail.google.com/mail/u/0/#inbox" rel="noopener noreferrer">osdague@gmail.com</a> | <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/oscarwar92/" target="_blank" rel="noopener noreferrer">Oscar Guerra</a></p>
     </div>
 
   </main>
 
- <script type="module" src="../src/app.js"></script>
-  </body>
+  <footer class="footer" role="contentinfo">
+    <p>&copy; 2024 Oscar Guerra. Todos los derechos reservados.</p>
+    <p>Desarrollador Full-Stack y Analista Cuantitativo</p>
+  </footer>
+
+  <script type="module" src="assets/js/app.js"></script>
+</body>
 </html>
