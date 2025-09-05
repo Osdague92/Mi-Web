@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'self' https://api.coingecko.com https://api.exchangerate-api.com;">
   <title>Oscar Guerra | Proyectos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
 
   <header class="header">
-    <img src="assets/img/me .jpg" alt="Oscar Guerra" class="logo" />
+    <img src="assets/images/me .jpg" alt="Oscar Guerra" class="logo" />
     <div id="auth-container">
     <button id="login-btn" class="cta-button" style="padding: 0.5rem 1rem;">Iniciar Sesión</button>
 </div>
@@ -36,7 +37,12 @@
     </section>
 
   </main>
-  
-  <script type="module" src="../src/app.js"></script>
+
+  <footer class="footer">
+    <p>&copy; 2024 Oscar Guerra. Todos los derechos reservados.</p>
+    <p>Desarrollador Full-Stack | Analista Cuantitativo | Especialista en Trading Algorítmico</p>
+  </footer>
+
+  <script type="module" src="assets/js/app.js"></script>
 </body>
 </html>

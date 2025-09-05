@@ -16,25 +16,16 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     text-align: center;
-    padding: 2rem 1rem;
 }
 
 .logo {
-    width: 100px;
-    height: 100px;
     border-radius: 50%;
     margin-bottom: 1rem;
-}
-
-.nav-container {
-    margin-top: 1rem;
 }
 
 .nav-container a {
     color: white;
     text-decoration: none;
-    margin: 0 1rem;
-    padding: 0.5rem 1rem;
     border-radius: 5px;
     transition: background-color 0.3s;
 }
@@ -44,9 +35,7 @@ body {
 }
 
 .content {
-    max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem 1rem;
 }
 
 .section-card {
@@ -59,8 +48,6 @@ body {
 
 .services-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
     margin-top: 1rem;
 }
 
@@ -81,8 +68,6 @@ body {
 /* Estilos para los tickers de precios */
 .price-tickers {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
     margin-top: 1rem;
 }
 
@@ -159,18 +144,116 @@ body {
     background: #5a6fd8;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .price-tickers {
-        grid-template-columns: 1fr;
+/* Estilos para el footer */
+.footer {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-align: center;
+    padding: 2rem 1rem;
+    margin-top: 2rem;
+}
+
+.footer p {
+    margin: 0.5rem 0;
+}
+
+.footer p:first-child {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Mobile-First Responsive Design */
+/* Base styles (mobile first - 320px and up) */
+.header {
+    padding: 1rem 0.5rem;
+}
+
+.logo {
+    width: 80px;
+    height: 80px;
+}
+
+.nav-container {
+    margin-top: 1rem;
+}
+
+.nav-container a {
+    display: block;
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.content {
+    padding: 1rem 0.5rem;
+}
+
+.section-card {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.services-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.price-tickers {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+/* Tablet styles (768px and up) */
+@media (min-width: 768px) {
+    .header {
+        padding: 2rem 1rem;
     }
     
-    .services-container {
-        grid-template-columns: 1fr;
+    .logo {
+        width: 100px;
+        height: 100px;
     }
     
     .nav-container a {
-        display: block;
-        margin: 0.5rem 0;
+        display: inline-block;
+        margin: 0 0.5rem;
+        text-align: left;
+    }
+    
+    .content {
+        padding: 2rem 1rem;
+    }
+    
+    .section-card {
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .services-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+    
+    .price-tickers {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Desktop styles (1024px and up) */
+@media (min-width: 1024px) {
+    .nav-container a {
+        margin: 0 1rem;
+    }
+    
+    .price-tickers {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Large desktop styles (1200px and up) */
+@media (min-width: 1200px) {
+    .content {
+        max-width: 1200px;
+        margin: 0 auto;
     }
 }
