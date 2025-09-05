@@ -3,22 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.coingecko.com https://api.exchangerate-api.com;">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Oscar Guerra | Trading</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
 
   <header class="header">
-    <img src="assets/img/me .jpg" alt="Oscar Guerra" class="logo" />
+    <img src="assets/images/me .jpg" alt="Oscar Guerra" class="logo" />
     <div id="auth-container">
     <button id="login-btn" class="cta-button" style="padding: 0.5rem 1rem;">Iniciar Sesión</button>
 </div>
     <h1>Contenido sobre Trading y Mercados</h1>
     <p>Aquí comparto mis análisis, estrategias y reflexiones sobre el mundo del trading cuantitativo y la automatización.</p>
-    <nav class="nav-container">
+    <nav class="nav-container" role="navigation" aria-label="Navegación principal">
       <a href="index.html">Inicio</a>
       <a href="trading.html">Trading</a>
       <a href="proyectos.html">Proyectos</a>
@@ -26,7 +31,7 @@
     </nav>
   </header>
 
-  <main class="content">
+  <main class="content" role="main">
 <section id="price-tickers" class="section-card price-tickers-container">
     <div class="ticker">
         <span class="ticker-label">Bitcoin (BTC)</span>
@@ -83,8 +88,12 @@
       </form>
     </section>
   </main>
-  
 
-  <script type="module" src="../src/app.js"></script>
+  <footer class="footer" role="contentinfo">
+    <p>&copy; 2024 Oscar Guerra. Todos los derechos reservados.</p>
+    <p>Desarrollador Full-Stack y Analista Cuantitativo</p>
+  </footer>
+
+  <script type="module" src="assets/js/app.js"></script>
 </body>
 </html>
