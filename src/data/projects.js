@@ -10,8 +10,8 @@ export const projects = [
     title: 'SaveursDeBechamel restaurant landing',
     description:
       'Landing page para restaurante con menú destacado, reservas y una experiencia visual enfocada en conversión.',
-    link: 'https://example.com/saveursdebechamel',
-    github: 'https://github.com/osdague/saveursdebechamel-landing',
+    link: 'https://osdaguewar.github.io/SaveursDeBechamel/',
+    github: 'https://github.com/Osdague92/SaveursDeBechamel',
   },
   {
     title: 'Musician portfolio demo',
