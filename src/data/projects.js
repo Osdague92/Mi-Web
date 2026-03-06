@@ -3,8 +3,8 @@ export const projects = [
     title: 'Fernando Lopez website',
     description:
       'Sitio web corporativo optimizado para presentar servicios profesionales y captar clientes potenciales.',
-    link: 'https://example.com/fernando-lopez',
-    github: 'https://github.com/osdague/fernando-lopez-website',
+    link: 'https://fernandolopez.netlify.app/',
+    github: 'https://github.com/Osdague92/WebFernandoLopez',
   },
   {
     title: 'SaveursDeBechamel restaurant landing',
