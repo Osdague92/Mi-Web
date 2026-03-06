@@ -11,7 +11,7 @@ function Hero() {
         className="max-w-3xl"
       >
         <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-brand-400">
-          Desarrollador Full Stack
+          Desarrollador Web
         </p>
         <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl">
           Hola, soy Oscar Guerra.
