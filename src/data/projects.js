@@ -21,17 +21,17 @@ export const projects = [
     github: 'https://github.com/osdague/musician-portfolio-demo',
   },
   {
-    title: 'Lawyer landing page demo',
+    title: 'MiChatbotOscaro',
     description:
-      'Página de aterrizaje para despacho legal con estructura clara de servicios y contacto directo.',
-    link: 'https://example.com/lawyer-landing',
-    github: 'https://github.com/osdague/lawyer-landing-demo',
+      'Procesamiento de Lenguaje Natural (PLN): Limpieza y preprocesamiento de datos, tokenización, normalización, eliminación de stopwords, lematización y stemming. Representación de texto mediante Bolsa de Palabras. Usamos Naive Bayes.',
+    link: 'https://github.com/Osdague92/MiChatbotOscar',
+    github: 'https://github.com/Osdague92/MiChatbotOscar',
   },
   {
-    title: 'Psychologist landing page demo',
+    title: 'El Postrino',
     description:
-      'Landing enfocada en confianza y claridad para promocionar consultas psicológicas y agendar sesiones.',
-    link: 'https://example.com/psychologist-landing',
-    github: 'https://github.com/osdague/psychologist-landing-demo',
+      'es un proyecto orientado a la gestión y publicación de contenidos digitales, con el objetivo de brindar una experiencia clara y ordenada a los usuarios.',
+    link: 'https://osdague92.github.io/el-postrino1/',
+    github: 'https://github.com/Osdague92/el-postrino1',
   },
 ];
