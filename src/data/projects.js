@@ -2,7 +2,7 @@ export const projects = [
   {
     title: 'Fernando Lopez website',
     description:
-      'Sitio web corporativo optimizado para presentar servicios profesionales y captar clientes potenciales.',
+      'Proyecto web estático optimizado para:Presentación profesional del autor Formulario de contacto seguro Formulario de contacto con Netlify Forms Despliegue continuo en producción.',
     link: 'https://fernandolopez.netlify.app/',
     github: 'https://github.com/Osdague92/WebFernandoLopez',
   },
