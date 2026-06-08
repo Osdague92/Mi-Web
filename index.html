@@ -10,6 +10,14 @@
     <title>Oscar Guerra | Desarrollador Web</title>
   </head>
   <body class="bg-slate-950 text-slate-100">
+    <!-- Hidden form for Netlify post-processing bots (SPA detection) -->
+    <form name="contacto" netlify netlify-honeypot="bot-field" hidden>
+      <input name="bot-field" />
+      <input name="name" />
+      <input name="email" />
+      <textarea name="message"></textarea>
+    </form>
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
